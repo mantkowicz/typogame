@@ -21,7 +21,7 @@
 		
 		public function getColor()
 		{
-			return 40;
+			return ( ord( $firstLetter ) + ($_SESSION['user'] * 15) ) % 360;
 		}
 		
 		public function save()

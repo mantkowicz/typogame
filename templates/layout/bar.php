@@ -3,7 +3,7 @@
 
 <div class='row' style='font-size:18px;'>
 	<div class='well well-sm col-xs-12' style='margin-bottom:50px;'>
-		<div class='avatar' style='float:left; color:hsl(<?php echo SessionManager::getInstance()->getUser()->getColor();?>, 75%, 75%); background-color:hsl(<?php echo SessionManager::getInstance()->getUser()->getColor();?>, 25%, 50%'>
+		<div class='avatar' style='float:left; background-color:hsl(<?php echo SessionManager::getInstance()->getUser()->getColor();?>, 75%, 40%); color:white;'>
 			<?php echo substr(SessionManager::getInstance()->getUser()->login, 0, 1);?>
 		</div>
 

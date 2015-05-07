@@ -1,6 +1,8 @@
 <link href="<?php echo _STATIC?>css/bootstrap.min.css" rel="stylesheet">
 <link href="<?php echo _STATIC?>css/custom.css" rel="stylesheet">
 
+<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>

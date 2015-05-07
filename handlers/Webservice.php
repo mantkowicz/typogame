@@ -49,17 +49,21 @@
 			die();
 		}
 		
-		public function register($register_date, $login, $password)
+		public function register($login, $password)
 		{
-			$user = new User(0, $register_date, $login, $password);
+			$now = date('Y-m-d H:i:s');
+			
+			$user = new User(0, $now, $login, $password);
 			
 			if( $user->save()->status == 1 )
 			{
-				return 1;
+				$response = new Response(1, $result->value[0], "Account has been created");
+				return $response->json();
 			}
 			else
 			{
-				return 0;
+				$response = new Response(0, null, "Account has not been created");
+				return $response->json();
 			}
 		}
 		

@@ -9,6 +9,9 @@
 	
 	switch ($action)
 	{
+		case "register":
+			echo Webservice::getInstance()->register($_GET['login'], $_GET['password']);
+			break;
 		case "login":
 			echo Webservice::getInstance()->login($_GET['login'], $_GET['password']);
 			break;
