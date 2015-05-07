@@ -19,6 +19,11 @@
 			$this->password = $password;
 		}
 		
+		public function getColor()
+		{
+			return 40;
+		}
+		
 		public function save()
 		{
 			DatabaseManager::getInstance()->lock("users");

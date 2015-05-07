@@ -18,6 +18,7 @@
 		private function __construct() 
 		{
 			$this->mysqli = new mysqli(_HOST, _DB_USER, _DB_PASSWORD, _DATABASE);
+			$this->mysqli->query("SET NAMES 'utf8'");
 		}
 		
 		public function select($query)

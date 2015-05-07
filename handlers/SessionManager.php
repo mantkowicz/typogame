@@ -15,27 +15,30 @@
 	
 		private function __construct()
 		{
-			$this->mysqli = new mysqli(_HOST, _DB_USER, _DB_PASSWORD, _DATABASE);
 		}
 		
-		public function getColor()
+		public function login($user)
 		{
-			return 120;
+			$_SESSION['user'] = $user->id;
 		}
 		
-		public function getName()
+		public function logout()
 		{
-			return 'Admin';
+			session_unset(); 
+			session_destroy();
 		}
 		
-		public function getFirstLetter()
+		public function getUser()
 		{
-			return 'A';
-		}
-		
-		public function getId()
-		{
-			return 1;
+			if( !isset($_SESSION['user']) || $_SESSION['user'] == null )
+			{
+				Logger::log("PUSTO");
+				return null;
+			}
+			
+			Logger::log(json_encode(User::get($_SESSION['user'], null, null, null)->value[0]));
+			
+			return User::get($_SESSION['user'], null, null, null)->value[0];
 		}
 	}
 

@@ -2,6 +2,8 @@
 
 	require_once _PATH.'handlers/SessionManager.php';
 	require_once _PATH.'classes/models/font.php';
+	require_once _PATH.'classes/models/user.php';
+	require_once _PATH.'classes/Response.php';
 
 	class Webservice
 	{
@@ -27,12 +29,24 @@
 			
 			if( $result->value[0]->password == $password )
 			{
-				return true;
+				SessionManager::getInstance()->login($result->value[0]);
+				
+				$response = new Response(1, $result->value[0], "Login is correct");
+				return $response->json();
 			}
 			else 
 			{
-				return false;
+				$response = new Response(0, null, "Login is not correct");
+				return $response->json();
 			}			
+		}
+		
+		public function logout()
+		{
+			SessionManager::getInstance()->logout();
+			
+			header("Location: "._URL."login.php");
+			die();
 		}
 		
 		public function register($register_date, $login, $password)
