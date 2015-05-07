@@ -31,12 +31,12 @@
 			{
 				SessionManager::getInstance()->login($result->value[0]);
 				
-				$response = new Response(1, $result->value[0], "Login is correct");
+				$response = new Response(1, $result->value[0], "Dane logowania poprawne!");
 				return $response->json();
 			}
 			else 
 			{
-				$response = new Response(0, null, "Login is not correct");
+				$response = new Response(0, null, "Podano niepoprawne dane logowania!");
 				return $response->json();
 			}			
 		}
@@ -57,12 +57,12 @@
 			
 			if( $user->save()->status == 1 )
 			{
-				$response = new Response(1, $result->value[0], "Account has been created");
+				$response = new Response(1, $result->value[0], "Konto zostalo utworzone!");
 				return $response->json();
 			}
 			else
 			{
-				$response = new Response(0, null, "Account has not been created");
+				$response = new Response(0, null, "Konto nie zostalo utworzone!");
 				return $response->json();
 			}
 		}

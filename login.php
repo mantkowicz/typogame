@@ -24,6 +24,10 @@ if( SessionManager::getInstance()->getUser() != null )
 
 	<body>
 		<script>
+			function blockSubmit(event)
+			{
+			}
+		
 			function handleResponse(response)
 			{
 				if(response.status > 0)
@@ -38,10 +42,36 @@ if( SessionManager::getInstance()->getUser() != null )
 					$(".alert.alert-danger").find(".alert-message").html(response.message);
 				}
 			}
+
+			function validate()
+			{
+				if( $("#id_login").val().length > 0 && $("#id_password").val().length > 0 )
+				{
+					if( $("#id_submit").hasClass("disabled") )
+					{
+						$("#id_submit").removeClass("disabled");
+						
+						$("#form_login").unbind();
+						$("#form_login").submit( function(event) { sendForm(event, getFormData(event.target), handleResponse) } )
+					}
+				}
+				else
+				{
+					if( !$("#id_submit").hasClass("disabled") )
+					{
+						$("#id_submit").addClass("disabled");
+
+						$("#form_login").unbind();
+						$("#form_login").submit( function(e){ return false; } )
+					}
+				}
+
+				setTimeout(validate, 500);
+			}
 		
 			$(document).ready(
-				function(){
-					$("#form_login").submit( function(event) { sendForm(event, getFormData(event.target), handleResponse) } )
+				function(){				
+					validate();
 				}
 			);
 		</script>
@@ -55,11 +85,11 @@ if( SessionManager::getInstance()->getUser() != null )
 			
 			<div class="alert alert-danger alert-dismissible" role="alert" style="display: none;">
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<strong>Błąd!</strong> <span class="alert-message"></span>
+				<strong>B��d!</strong> <span class="alert-message"></span>
 			</div>
 			
 			<div class="col-sm-8 col-sm-offset-2">
-				<form id="form_login" action="ws.php?action=login" method="GET">
+				<form id="form_login" action="ws.php?action=authorize" method="GET">
 					<div class="form-group">
 						<label class="sr-only" for="id_login">Login</label>
 						<div class="input-group login-input-group">
@@ -80,7 +110,7 @@ if( SessionManager::getInstance()->getUser() != null )
 					
 					<p style="text-align:center; margin-bottom:20px;"> Nie masz konta? <a href="<?php echo _URL?>register.php"> <span class="glyphicon glyphicon-edit"></span> Załóż konto</a> </p>
 					
-					<button type="submit" class="btn btn-lg btn-success" style="width:100%;"> <span class="glyphicon glyphicon-log-in"></span> Zaloguj</button>
+					<button id="id_submit" type="submit" class="btn btn-lg btn-success" style="width:100%;"> <span class="glyphicon glyphicon-log-in"></span> Zaloguj</button>
 				</form>
 			</div>
 		

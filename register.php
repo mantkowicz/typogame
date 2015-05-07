@@ -24,12 +24,52 @@ if( SessionManager::getInstance()->getUser() != null )
 		<script>			
 			function handleResponse(response)
 			{
-				window.location.replace('<?php echo _URL;?>');
+				if(response.status > 0)
+				{
+					window.location.replace('<?php echo _URL;?>');
+				}
+				else
+				{
+					changeToError( $('.input-group') );
+					
+					$(".alert.alert-danger").css('display', 'inherit');
+					$(".alert.alert-danger").find(".alert-message").html(response.message);
+				}
+			}
+
+			function validate()
+			{
+				if( $("#id_login").val().length > 0 && 
+					$("#id_password").val().length > 0 && 
+					$("#id_confirm_password").val().length > 0 && 
+					($("#id_password").val() == $("#id_confirm_password").val()) 
+				  )
+				{
+					if( $("#id_submit").hasClass("disabled") )
+					{
+						$("#id_submit").removeClass("disabled");
+
+						$("#form_register").unbind();
+						$("#form_register").submit( function(event) { sendForm(event, getFormData(event.target), handleResponse) } );
+					}
+				}
+				else
+				{
+					if( !$("#id_submit").hasClass("disabled") )
+					{
+						$("#id_submit").addClass("disabled");
+
+						$("#form_register").unbind();
+						$("#form_register").submit( function(e){ return false; } );
+					}
+				}
+
+				setTimeout(validate, 500);
 			}
 				
 			$(document).ready(
 				function(){
-					$("#form_register").submit( function(event) { sendForm(event, getFormData(event.target), handleResponse) } )
+					validate();
 				}
 			);
 		</script>
@@ -77,7 +117,7 @@ if( SessionManager::getInstance()->getUser() != null )
 					
 					<p style="text-align:center; margin-bottom:20px;"> Masz już konto? <a href="<?php echo _URL?>login.php"> <span class="glyphicon glyphicon-log-in"></span> Zaloguj się</a> </p>
 					
-					<button type="submit" class="btn btn-lg btn-success" style="width:100%;"> <span class="glyphicon glyphicon-edit"></span> Załóż konto</button>
+					<button id="id_submit" type="submit" class="btn btn-lg btn-success" style="width:100%;"> <span class="glyphicon glyphicon-edit"></span> Załóż konto</button>
 				</form>
 			</div>
 		
