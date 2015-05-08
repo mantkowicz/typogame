@@ -64,7 +64,7 @@ if( SessionManager::getInstance()->getUser() != null )
 					}
 				}
 
-				setTimeout(validate, 500);
+				setTimeout(validate, 100);
 			}
 				
 			$(document).ready(

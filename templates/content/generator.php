@@ -18,13 +18,13 @@
 	<hr style='border-color:#DDD;'>
 </div>
 
-<form id='id_form' onchange='refresh()' action='/tp/ws.php?action=addJob' method='post'>	
+<form id='id_form' action='<?php echo _URL?>ws.php?action=addJob' method='post'>	
 	<div class='col-lg-2 col-sm-4'>
 		<div class='form-group'>
 			<label class='sr-only' for='id_width'>Szerokość w pikselach</label>
 			<div class='input-group'>
 				<div class='input-group-addon'> <span class='glyphicon glyphicon-resize-horizontal'></span> </div>
-				<input type='number' class='form-control' value='600' id='id_width' name='width' max='2048'>
+				<input type='number' class='form-control' value='800' id='id_width' name='width' max='2048'>
 				<div class='input-group-addon'>px</div>
 			</div>
 		</div>
@@ -35,7 +35,7 @@
 			<label class='sr-only' for='id_height'>Wysokość w pikselach</label>
 			<div class='input-group'>
 				<div class='input-group-addon'> <span class='glyphicon glyphicon-resize-vertical'></span> </div>
-				<input type='number' class='form-control' value='800' id='id_height' name='height' max='4096'>
+				<input type='number' class='form-control' value='480' id='id_height' name='height' max='4096'>
 				<div class='input-group-addon'>px</div>
 			</div>
 		</div>
@@ -68,12 +68,13 @@
 			<label class='sr-only' for='id_font'>Czcionka</label>
 			<select class='form-control' id='id_font' name='font' style='font-family: inherit;'>";
 		
-			<!-- foreach( $fonts as $font )
-			{	
-				echo "<option style='font-family: $font[0]' value='{\"fontName\": \"$font[0]\", \"fontId\": \"$font[2]\"}'>$font[0]</option>";
-			}-->
-		
-			echo"
+			<?php 
+				foreach(Font::getAll()->value as $font)
+				{
+					echo "<option value='$font->id'> $font->name </option>";
+				}
+			?>
+			
 			</select>
 		</div>
 	</div>

@@ -18,7 +18,7 @@
 	
 	$body_content = _PATH."templates/content/main.php";
 	
-	$page_title = "Kerning - ustrona główna";
+	$page_title = "Kerning - strona główna";
 	
 	include (_PATH.'templates/Header.php');
 	include (_PATH.'templates/Body.php');

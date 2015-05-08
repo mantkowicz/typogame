@@ -66,7 +66,7 @@ if( SessionManager::getInstance()->getUser() != null )
 					}
 				}
 
-				setTimeout(validate, 500);
+				setTimeout(validate, 100);
 			}
 		
 			$(document).ready(
@@ -85,7 +85,7 @@ if( SessionManager::getInstance()->getUser() != null )
 			
 			<div class="alert alert-danger alert-dismissible" role="alert" style="display: none;">
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<strong>B³¹d!</strong> <span class="alert-message"></span>
+				<strong>Bï¿½ï¿½d!</strong> <span class="alert-message"></span>
 			</div>
 			
 			<div class="col-sm-8 col-sm-offset-2">

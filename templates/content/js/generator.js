@@ -5,8 +5,11 @@ settingsObject.area = new Object();
 function refresh()
 {
 	settingsObject.text.fontSize = document.getElementById("id_form").elements["fontSize"].value;
-	settingsObject.text.fontFamily = JSON.parse( document.getElementById("id_form").elements["font"].value ).fontId;
-	settingsObject.text.fontFamilyName = JSON.parse( document.getElementById("id_form").elements["font"].value ).fontName;
+
+	var fontSelect = document.getElementById("id_form").elements["font"];
+	
+	settingsObject.text.fontFamily =  fontSelect.value;
+	settingsObject.text.fontFamilyName = fontSelect.options[fontSelect.selectedIndex].text;
 	
 	settingsObject.text.content = document.getElementById("id_form").elements["text"].value;
 	
@@ -21,20 +24,20 @@ function refresh()
 	$("#id_text").css("padding", settingsObject.area.padding + "px");
 	
 	$("#id_text").css("font-size", settingsObject.text.fontSize + "px");
-	$("#id_text").css("font-family", settingsObject.text.fontFamily);
+	$("#id_text").css("font-family", "kerning_font_"+settingsObject.text.fontFamilyName);
 	
 	$("#id_text").html(settingsObject.text.content);
 }
 
-function ss(a)
+function handleResponse(data)
 {
-	if( a.status == false )
+	if( data.status > 0 )
 	{
-		alert( "Wystąpił błąd bazy danych!" );
+		window.location.replace("<?php echo _URL?>jobs/mine");
 	}
 	else
 	{
-		window.location.replace("<?php echo _URL?>jobs/mine");
+		alert( data.message );
 	}
 }
 
@@ -53,6 +56,9 @@ function showFileName()
 $(document).ready(
 	function()
 	{
-		$("#id_form").submit( function(event) { sendForm(event, "&properties="+JSON.stringify(settingsObject), ss) } )
+		$("#id_form").submit( function(event) { sendForm(event, "&properties="+JSON.stringify(settingsObject)+"&points=100&font="+settingsObject.text.fontFamily, handleResponse) } )
+		$("#id_form").change( function(event) { refresh() } )
+		
+		refresh()
 	}
 );

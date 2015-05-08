@@ -21,6 +21,9 @@
 		case "addFont":
 			echo Webservice::getInstance()->addFont();
 			break;
+		case "addJob":
+			echo Webservice::getInstance()->addJob($_POST['properties'], $_POST['points'], $_POST['font']);
+			break;
 		default:
 			echo "Wrong action!";
 	}
