@@ -4,11 +4,11 @@ function go()
 	
 	$.ajax({
 		type: 'post',  
-		url: '<?php echo _URL?>ws.php/?action=getJobs',
-		data: '&author=<?php echo SessionManager::getName()?>',
+		url: '"._URL."ws.php/?action=getJobs',
+		data: '',
 		success: function(data) 
 		{
-			refreshContentHtml( JSON.parse(data).jobs );
+			refreshContentHtml( JSON.parse(data).value );
 		}
 	});
 }
@@ -25,23 +25,6 @@ function refreshContentHtml(jsonobj)
 	}
 	
 	$('#id_content').html(contentHTML);
-}
-
-function deleteJob(jobId)
-{
-	
-	if (confirm('Czy na pewno chcesz usunąć zlecenie o id = ' + jobId + '?') == true)
-	{		
-		$.ajax({
-			type: 'get',  
-			url: '<?php echo _URL?>ws.php?action=removeJob',
-			data: '&id='+jobId,
-			success: function(data) 
-			{
-				go();
-			}
-		});
-	}
 }
 
 function createElement(json)
@@ -71,12 +54,8 @@ function createElement(json)
 	panelHtml += '				<td colspan=\'3\'> <span class=\'glyphicon glyphicon-font\'></span> <span style=\'white-space:nowrap\'> ' + json.font_name + ' </span> </td>';
 	panelHtml += '			</tr>';
 	panelHtml += '		</table>';
-	panelHtml += '	</div>	';
-	panelHtml += '	<div class=\'panel-footer\'> ';
-	panelHtml += '		<a onclick=\'deleteJob(' + json.id + ')\' class=\'btn btn-danger\' style=\'float:right; margin-left:10px;\'> <span class=\'glyphicon glyphicon-trash\'></span> </a>';
 	panelHtml += '		<a class=\'btn btn-primary\' style=\'float:right;\'> <span class=\'glyphicon glyphicon-eye-open\'></span> Zobacz szczegóły </a>';
-	panelHtml += '		<br><br> ';
-	panelHtml += '	</div> ';
+	panelHtml += '	</div>	';
 	panelHtml += '</div>';
 	panelHtml += '<br>';
 	
@@ -92,7 +71,7 @@ function showme(e, fd)
 $(document).ready(
 	function()
 	{
-		$('#id_filter').submit( function(event) { sendForm(event, '&author=<?php echo SessionManager::getName()?>'+getFormData(event.target), refreshContentHtml) } )
+		$('#id_filter').submit( function(event) { sendForm(event, getFormData(event.target), refreshContentHtml) } )
 		$('.btn-form-reset').click( function(event) { event.preventDefault(); $('#id_filter')[0].reset(); } )
 	}
 );

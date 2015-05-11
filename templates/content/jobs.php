@@ -1,20 +1,51 @@
-<script> <?php include(_PATH."templates/content/js/mine.js");?> </script>
-	
+<script> <?php include(_PATH."templates/content/js/jobs.js");?> </script>
+
 
 <div class='col-xs-12'>
 	<form id='id_filter' action='/tp/ws.php?action=getJobs' method='post'>	
-		<div class='col-md-3 col-sm-3'>
-
+		<div class='col-md-3 col-sm-3'>			
 			<div class='form-group'>
 				<label class='sr-only' for='id_font_name'>Czcionka</label>
-				<select class='form-control' id='id_font_name'>
-					<option selected disabled style='color:red;'>Czcionka</option>
-					<option>Times New Roman</option>
-					<option>Arial</option>
-					<option>Tahoma</option>
-				</select>
+				<div class='input-group'>
+				<div class='input-group-addon'> <span class='glyphicon glyphicon-font'></span> </div>
+					<select class='form-control' id='id_font_name'>
+						
+						<?php 
+							foreach(Font::getAll()->value as $font)
+							{
+								echo "<option value='$font->id'> $font->name </option>";
+							}
+						?>
+						
+					</select>
+				</div>
 			</div>
-		
+			
+			<div class='form-group' <?php if(!$jobs_show_author) echo "style='height:0px; margin:0px; padding:0px;'";?>>
+				<label class='sr-only' for='id_author'>Autor</label>
+				<div class='input-group'>
+					<?php if($jobs_show_author) echo"<div class='input-group-addon'> <span class='glyphicon glyphicon-user'></span> </div>"?>
+					<input type='<?php if(!$jobs_show_author) echo "hidden"; else echo "text";?>' class='form-control' id='id_author' name='author' placeholder='Autor' <?php if(!$jobs_show_author) echo "value='".SessionManager::getInstance()->getUser()->login."'"?>>
+				</div>
+			</div>
+		</div>
+				
+		<div class='col-md-3 col-sm-4' style='padding-right:20px;'>
+			<div class='form-group'>
+				<label class='sr-only' for='id_date_start'>Data utworzenia minimalna</label>
+				<div class='input-group'>
+					<div class='input-group-addon'> <span class='glyphicon glyphicon-calendar'></span> </div>
+					<input type='date' class='form-control' id='id_date_start' name='date_start'>
+				</div>
+			</div>
+			
+			<div class='form-group'>
+				<label class='sr-only' for='id_date_end'>Data utworzenia maksymalna</label>
+				<div class='input-group'>
+					<div class='input-group-addon'> <span class='glyphicon glyphicon-calendar'></span> </div>
+					<input type='date' class='form-control' id='id_date_end' name='date_end'>
+				</div>
+			</div>
 		</div>
 		
 		<div class='col-md-3 col-sm-3'>
@@ -31,24 +62,6 @@
 				<div class='input-group'>
 					<div class='input-group-addon'> <span class='glyphicon glyphicon-star'></span> </div>
 					<input type='number' class='form-control' id='id_points_end' name='points_end' placeholder='Punkty'>
-				</div>
-			</div>
-		</div>
-		
-		<div class='col-md-3 col-sm-4' style='padding-right:20px;'>
-			<div class='form-group'>
-				<label class='sr-only' for='id_date_start'>Data utworzenia minimalna</label>
-				<div class='input-group'>
-					<div class='input-group-addon'> <span class='glyphicon glyphicon-calendar'></span> </div>
-					<input type='date' class='form-control' id='id_date_start' name='date_start'>
-				</div>
-			</div>
-			
-			<div class='form-group'>
-				<label class='sr-only' for='id_date_end'>Data utworzenia maksymalna</label>
-				<div class='input-group'>
-					<div class='input-group-addon'> <span class='glyphicon glyphicon-calendar'></span> </div>
-					<input type='date' class='form-control' id='id_date_end' name='date_end'>
 				</div>
 			</div>
 		</div>
@@ -79,6 +92,6 @@
 	
 <div id='id_content' class='col-xs-12'>
 	
-	<button class='btn btn-lg btn-success center-block' disabled><span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Loading...</button>
+	<button class='btn btn-lg btn-success center-block' disabled><span style="font-size:14px; margin-right:3px;" class='glyphicon glyphicon-repeat gly-spin'></span> Pobieranie wyników...</button>
 
 </div>
