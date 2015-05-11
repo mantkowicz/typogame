@@ -132,9 +132,107 @@
 			}
 		}
 		
-		public function getJobs()
+		public function getJobs($user_login_part, $fnt_id, $points_min, $points_max, $date_start, $date_end)
 		{
-		
+			$result = Job::get(null, null, $fnt_id, null, null, null, null);
+						
+			$users_temp = User::getAll();
+			$users = array();
+			
+			if( $user_login_part != null )
+			{					
+				foreach ($users_temp as $user)
+				{
+					if( !(strpos($user->login, $user_login_part) === false) )
+					{
+						$users[] = $user->id;
+					}
+				}
+				
+				if( count($users) == 0 )
+				{
+					$response = new Response(1, null, "Nie znaleziono zadnych uzytkownikow zawierajacych '".$user_login_part."'");
+					return $response->json();
+				}
+			}
+			
+			$jobs_temp = $result->value;
+			$jobs = array();
+			
+			foreach ($jobs_temp as $job) 
+			{
+				$isValid = true;
+				
+				if( $user_login_part != null )
+				{
+					if( !in_array( $job->usr_id, $users) )
+					{
+						$isValid = false;
+					}
+				}
+				
+				if( $points_min != null && $isValid )
+				{
+					if( $job->points < $points_min )
+					{
+						$isValid = false;
+					}
+				}
+				
+				if( $points_max != null && $isValid )
+				{
+					if( $job->points > $points_max )
+					{
+						$isValid = false;
+					}
+				}
+				
+				if( $date_start != null && $isValid )
+				{
+					if( $job->date_start < $date_start )
+					{
+						$isValid = false;
+					}
+				}
+				
+				if( $date_end != null && $isValid )
+				{
+					if( $job->date_start > $date_end )
+					{
+						$isValid = false;
+					}
+				}
+				
+				if( $isValid )
+				{
+					$jobs[] = $job;
+				}
+			}
+			
+			if( count($jobs) == 0 )
+			{
+				$response = new Response(1, null, "Nie znaleziono zadnych jobow spelniajacych zadane kryteria");
+				return $response->json();
+			}
+			else
+			{
+				$dict = array();
+				$dict["users"] = array();
+				$dict["fonts"] = array();
+				
+				foreach(User::getAll()->value as $u)
+				{
+					$dict["users"][$u->id] = $u->login;
+				}
+				
+				foreach(Font::getAll()->value as $f)
+				{
+					$dict["fonts"][$f->id] = $f->name;
+				}
+			
+				$response = new Response(1, json_encode($jobs), json_encode($dict));
+				return $response->json();
+			}
 		}
 		
 		public function getJobFontFile()

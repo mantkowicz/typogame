@@ -2,13 +2,13 @@
 
 
 <div class='col-xs-12'>
-	<form id='id_filter' action='/tp/ws.php?action=getJobs' method='post'>	
+	<form id='id_filter' action='<?php echo _URL?>ws.php?action=getJobs' method='post'>	
 		<div class='col-md-3 col-sm-3'>			
 			<div class='form-group'>
 				<label class='sr-only' for='id_font_name'>Czcionka</label>
 				<div class='input-group'>
 				<div class='input-group-addon'> <span class='glyphicon glyphicon-font'></span> </div>
-					<select class='form-control' id='id_font_name'>
+					<select class='form-control' id='id_font_name' name='font_name'>
 						
 						<?php 
 							foreach(Font::getAll()->value as $font)
