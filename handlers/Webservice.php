@@ -107,9 +107,21 @@
 			header( 'Location: '._URL.'jobs/add' );
 		}
 		
-		public function removeJob()
+		public function removeJob($job_id)
 		{
-		
+			$job = Job::get($job_id, null, null, null, null, null, null)->value[0];
+			$result = $job->remove();
+			
+			if($result->status == 1)
+			{
+				$response = new Response(1, null, "Job zostal usuniety");
+				return $response->json();
+			}
+			else
+			{
+				$response = new Response(0, null, "Nie udalo sie usunac joba");
+				return $response->json();
+			}
 		}
 		
 		public function addJob($properties, $points, $font)
@@ -132,80 +144,78 @@
 			}
 		}
 		
-		public function getJobs($user_login_part, $fnt_id, $points_min, $points_max, $date_start, $date_end)
+		public function getJobs($user_login, $fnt_id, $points_min, $points_max, $date_start, $date_end)
 		{
-			$result = Job::get(null, null, $fnt_id, null, null, null, null);
-						
-			$users_temp = User::getAll();
-			$users = array();
+			Logger::log("dostalem ".$user_login);
 			
-			if( $user_login_part != null )
-			{					
-				foreach ($users_temp as $user)
-				{
-					if( !(strpos($user->login, $user_login_part) === false) )
-					{
-						$users[] = $user->id;
-					}
-				}
+			$user_id = null;
+			
+			if($user_login != null)
+			{
+				$user = User::get(null, null, $user_login, null)->value[0];
 				
-				if( count($users) == 0 )
+				if( $user != null)
 				{
-					$response = new Response(1, null, "Nie znaleziono zadnych uzytkownikow zawierajacych '".$user_login_part."'");
+					$user_id = $user->id;
+				}
+				else
+				{
+					$response = new Response(1, null, "Nie znaleziono uzytkownika '".$user_login."'");
 					return $response->json();
 				}
 			}
-			
+				
+			$result = Job::get(null, $user_id, $fnt_id, null, null, null, null);			
 			$jobs_temp = $result->value;
 			$jobs = array();
-			
-			foreach ($jobs_temp as $job) 
+						
+			if( count($jobs_temp) == 0 )
 			{
-				$isValid = true;
-				
-				if( $user_login_part != null )
+				$response = new Response(0, null, "Nie znaleziono zadnych jobow spelniajacych zadane kryteria");
+				return $response->json();
+			}
+			else
+			{
+				foreach ($jobs_temp as $job) 
 				{
-					if( !in_array( $job->usr_id, $users) )
+					$isValid = true;
+									
+					if( $points_min != null && $isValid )
 					{
-						$isValid = false;
+						if( $job->points < $points_min )
+						{
+							$isValid = false;
+						}
 					}
-				}
-				
-				if( $points_min != null && $isValid )
-				{
-					if( $job->points < $points_min )
+					
+					if( $points_max != null && $isValid )
 					{
-						$isValid = false;
+						if( $job->points > $points_max )
+						{
+							$isValid = false;
+						}
 					}
-				}
-				
-				if( $points_max != null && $isValid )
-				{
-					if( $job->points > $points_max )
+					
+					if( $date_start != null && $isValid )
 					{
-						$isValid = false;
+						if( $job->date_start < $date_start )
+						{
+							$isValid = false;
+						}
 					}
-				}
-				
-				if( $date_start != null && $isValid )
-				{
-					if( $job->date_start < $date_start )
+					
+					if( $date_end != null && $isValid )
 					{
-						$isValid = false;
+						if( $job->date_start > $date_end )
+						{
+							$isValid = false;
+						}
 					}
-				}
-				
-				if( $date_end != null && $isValid )
-				{
-					if( $job->date_start > $date_end )
+					
+					if( $isValid )
 					{
-						$isValid = false;
+						$jobs[] = $job;
 					}
-				}
-				
-				if( $isValid )
-				{
-					$jobs[] = $job;
 				}
 			}
 			

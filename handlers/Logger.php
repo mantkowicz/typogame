@@ -8,11 +8,7 @@
 		}
 		
 	public static function dbLog($status, $value, $query)
-		{
-			if($status == null) $status = "null";
-			if($value  == null) $value  = "null";
-			if($query  == null) $query  = "null";			
-						
+		{						
 			$file = _PATH.'logs/database.log';
 			$now = self::getNow();
 			

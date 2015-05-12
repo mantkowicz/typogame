@@ -4,32 +4,84 @@ function getAllJobs()
 {
 	jsonobj = null;
 	
+	jobs_url = 'http://www.mantkowicz.pl/kerning/ws.php/?action=getJobs';
+	
+	if(JOBS_MINE)
+	{
+		jobs_url = 'http://www.mantkowicz.pl/kerning/ws.php/?action=getJobs&author=<?php echo SessionManager::getInstance()->getUser()->login;?>';
+	}
+		
 	$.ajax({
-		type: 'post',  
-		url: 'http://www.mantkowicz.pl/kerning/ws.php/?action=getJobs',
+		type: 'get',  
+		url: jobs_url,
 		data: '',
 		success: function(data) 
-		{
-			DICTIONARY = JSON.parse(JSON.parse(data).message);
-			refreshContentHtml( JSON.parse(data).value );
+		{		
+			if( JSON.parse(data).status == 0 || JSON.parse(data).value == null )
+			{
+				$('#id_content').html( 'Nie znaleziono żadnych wyników' );
+			}
+			else
+			{
+				DICTIONARY = JSON.parse(JSON.parse(data).message);
+				refreshContentHtml( JSON.parse(data) );
+			}
 		}
 	});
 }
 
 function refreshContentHtml(jsonobj)
 {
-	var jobs = JSON.parse(jsonobj);
-
-	$('#id_content').html( "<button class='btn btn-lg btn-success center-block' disabled><span style='font-size:14px; margin-right:3px;' class='glyphicon glyphicon-repeat gly-spin'></span> Pobieranie wyników...</button>" );
-
-	contentHTML = 'znaleziono: <strong> ' + jobs.length + ' </strong> rekordów <br><br>';
-
-	for(var job in jobs)
+	if( jsonobj.status == 0 || jsonobj.value == null )
 	{
-		contentHTML += createElement(jobs[job]);
+		$('#id_content').html( 'Nie znaleziono żadnych wyników' );
 	}
+	else
+	{
+		var jobs = JSON.parse(jsonobj.value);
+
+		$('#id_content').html( "<button class='btn btn-lg btn-success center-block' disabled><span style='font-size:14px; margin-right:3px;' class='glyphicon glyphicon-repeat gly-spin'></span> Pobieranie wyników...</button>" );
+
+		contentHTML = 'znaleziono: <strong> ' + jobs.length + ' </strong> rekordów <br><br>';
+
+		for(var job in jobs)
+		{
+			contentHTML += createElement(jobs[job]);
+		}
+		
+		$('#id_content').html(contentHTML);
+	}
+}
+
+function deleteJob(jobId)
+{
 	
-	$('#id_content').html(contentHTML);
+	if (confirm('Czy na pewno chcesz usunąć zlecenie o id = ' + jobId + '?') == true)
+	{		
+		$.ajax({
+			type: 'get',  
+			url: '<?php echo _URL?>ws.php?action=removeJob',
+			data: '&id='+jobId,
+			success: function(data) 
+			{
+				console.log(JSON.parse(data).message);
+				getAllJobs();
+			}
+		});
+	}
+}
+
+function showDetails(jobId, properties)
+{
+	var htmlContent  = "<div class='modal-header'> <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button> ";
+	    htmlContent += "<h4 class='modal-title' id='myModalLabel'> #" + jobId;
+	    <?php if(!$jobs_show_author) echo "htmlContent += '<a class=\'btn btn-danger\' style=\'float:right; margin-right:15px;\' >Zakończ</a>'; ";?>
+	    htmlContent += "</h4> </div> <br>";
+		htmlContent += "<textarea disabled class='center-block' style='resize:none; width:" + properties.area.width + "px; height:" + properties.area.height + "px; padding:" + properties.area.padding + "px; font-size:" + properties.text.fontSize + "px; font-family:" + 'kerning_font_' + properties.text.fontFamilyName + "'> " + properties.text.content + " </textarea>";
+	    htmlContent += "<br> <div class='col-xs-12'> <hr style='border-color:#DDD; margin-top: 0px !important;'></hr> </div> <br>"; 
+	
+	$('#detailsModal').find('.modal-dialog').find('.modal-content').html(htmlContent);
+	$('#detailsModal').modal('toggle');
 }
 
 function createElement(job)
@@ -48,7 +100,16 @@ function createElement(job)
 	panelHtml += '			</tr>';
 	panelHtml += '			<tr>';
 	panelHtml += '				<td style="padding:10px;"></td>';
-	panelHtml += '				<td style="padding:10px;"> <span colspan=\'3\' class=\'glyphicon glyphicon-calendar\' style=\'white-space:nowrap\'> ' + job.date_end + ' </span> </td> ';
+	
+	if(job.date_end == '0000-00-00 00:00:00')
+	{
+		panelHtml += '				<td style="padding:10px;"> <span colspan=\'3\' class=\'glyphicon glyphicon-calendar\' style=\'white-space:nowrap\'> ' + 'nie zakończono' + ' </span> </td> ';
+	}
+	else
+	{
+		panelHtml += '				<td style="padding:10px;"> <span colspan=\'3\' class=\'glyphicon glyphicon-calendar\' style=\'white-space:nowrap\'> ' + job.date_end + ' </span> </td> ';
+	}
+	
 	panelHtml += '			</tr>';
 	panelHtml += '			<tr>';
 	panelHtml += '				<td style="padding:10px;"> <strong> Punkty: </strong> </td>';
@@ -61,20 +122,14 @@ function createElement(job)
 	panelHtml += '		</table>';
 	panelHtml += '	</div>	';
 	panelHtml += '	<div class=\'panel-footer\'> ';
-	panelHtml += '		<a onclick=\'deleteJob(' + job.id + ')\' class=\'btn btn-danger\' style=\'float:right; margin-left:10px;\'> <span class=\'glyphicon glyphicon-trash\'></span> </a>';
-	panelHtml += '		<a class=\'btn btn-primary\' style=\'float:right;\'> <span class=\'glyphicon glyphicon-eye-open\'></span> Zobacz szczegóły </a>';
+	<?php if(!$jobs_show_author) echo "panelHtml += '		<a onclick=\'deleteJob(' + job.id + ')\' class=\'btn btn-danger\' style=\'float:right; margin-left:10px;\'> <span class=\'glyphicon glyphicon-trash\'></span> </a>';"?>
+	panelHtml += '		<a onclick=\'showDetails(' + job.id + ', ' + job.properties + ')\' class=\'btn btn-primary\' style=\'float:right;\'> <span class=\'glyphicon glyphicon-eye-open\'></span> Zobacz szczegóły </a>';
 	panelHtml += '		<br><br> ';
 	panelHtml += '	</div> ';
 	panelHtml += '</div>';
 	panelHtml += '<br>';
 	
 	return panelHtml;
-}
-
-function showme(e, fd)
-{
-	alert( fd );
-	e.preventDefault();
 }
 
 $(document).ready(

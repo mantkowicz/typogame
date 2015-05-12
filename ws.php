@@ -24,8 +24,11 @@
 		case "addJob":
 			echo Webservice::getInstance()->addJob($_POST['properties'], $_POST['points'], $_POST['font']);
 			break;
+		case "removeJob":
+			echo Webservice::getInstance()->removeJob($_GET['id']);
+			break;
 		case "getJobs":
-			echo Webservice::getInstance()->getJobs($_POST['author'], $_POST['font_name'], $_POST['points_start'], $_POST['points_end'], $_POST['date_start'], $_POST['date_end']);
+			echo Webservice::getInstance()->getJobs($_GET['author'], $_GET['font_name'], $_GET['points_start'], $_GET['points_end'], $_GET['date_start'], $_GET['date_end']);
 			break;
 		default:
 			echo "Wrong action!";

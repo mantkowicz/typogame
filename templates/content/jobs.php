@@ -1,8 +1,19 @@
+<?php if($jobs_show_author) echo"<script>JOBS_MINE=false;</script>"; else echo"<script>JOBS_MINE=true;</script>";?>
+
 <script> <?php include(_PATH."templates/content/js/jobs.js");?> </script>
 
 
 <div class='col-xs-12'>
-	<form id='id_filter' action='<?php echo _URL?>ws.php?action=getJobs' method='post'>	
+
+	<div id="detailsModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content" style="padding:15px;">
+				
+			</div>
+		</div>
+	</div>
+
+	<form id='id_filter' action='<?php echo _URL?>ws.php?action=getJobs' method='get'>	
 		<div class='col-md-3 col-sm-3'>			
 			<div class='form-group'>
 				<label class='sr-only' for='id_font_name'>Czcionka</label>

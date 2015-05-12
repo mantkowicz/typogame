@@ -100,14 +100,17 @@
 			
 			$result = DatabaseManager::getInstance()->select($query);
 			$arr = array();
-				
-			foreach($result as $r)
-			{
-				$arr[] = new Job($r[0], $r[1], $r[2], $r[3], $r[4], $r[5], $r[6]);
-			}
 			
+			if( $result[0] != null )
+			{
+				foreach($result as $r)
+				{
+					$arr[] = new Job($r[0], $r[1], $r[2], $r[3], $r[4], $r[5], $r[6]);
+				}	
+			}
+
 			Logger::dbLog($status, $arr, $query);
-				
+			
 			return new Result($status, $arr, $query);
 		}
 		
