@@ -245,9 +245,11 @@
 			}
 		}
 		
-		public function getJobFontFile()
+		public function getFontPath($id)
 		{
-		
+			$font = Font::get($id, null, null, null);
+			
+			return $font->value[0]->path;
 		}
 		
 		public function getJobPropertiesFile()

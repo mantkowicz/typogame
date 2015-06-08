@@ -30,6 +30,10 @@
 		case "getJobs":
 			echo Webservice::getInstance()->getJobs($_GET['author'], $_GET['font_name'], $_GET['points_start'], $_GET['points_end'], $_GET['date_start'], $_GET['date_end']);
 			break;
+		case "getFont":
+			header("Location: ".Webservice::getInstance()->getFontPath($_GET['id']));
+			die();
+			break;
 		default:
 			echo "Wrong action!";
 	}
