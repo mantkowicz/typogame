@@ -245,6 +245,24 @@
 			}
 		}
 		
+		public function getUsers()
+		{
+			$users = User::getAll();
+				
+			$response = new Response(1, json_encode($users), "Lista wszystkich uzytkownikow zostala zwrocona");
+				
+			return $response->json();
+		}
+		
+		public function getFonts()
+		{
+			$fonts = Font::getAll();
+			
+			$response = new Response(1, json_encode($fonts), "Lista wszystkich fontow zostala zwrocona");
+			
+			return $response->json();
+		}
+				
 		public function getFontPath($id)
 		{
 			$font = Font::get($id, null, null, null);
