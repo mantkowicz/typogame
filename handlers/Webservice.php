@@ -72,9 +72,7 @@
 		
 		public function addFont()
 		{
-			$user_name = SessionManager::getInstance()->getUser()->login;
-			
-			$target_dir = _MEDIA."$user_name/";
+			$target_dir = _MEDIA;
 			
 			if( !file_exists($target_dir) )
 			{
@@ -97,7 +95,7 @@
 				if( move_uploaded_file($_FILES["fontFile"]["tmp_name"], $target_file) )
 				{
 					$filename = pathinfo($target_file, PATHINFO_FILENAME);
-					$filepath = _URL."media/$user_name/".pathinfo($target_file, PATHINFO_BASENAME);
+					$filepath = _URL."media/".pathinfo($target_file, PATHINFO_BASENAME);
 					
 					$font = new Font(0, SessionManager::getInstance()->getUser()->id, $filename, $filepath);
 					$font->save();
@@ -124,11 +122,11 @@
 			}
 		}
 		
-		public function addJob($properties, $points, $font)
+		public function addJob($font_size, $content, $width, $height, $padding, $points, $font)
 		{
 			$now = date('Y-m-d H:i:s');
 			
-			$job = new Job(0, SessionManager::getInstance()->getUser()->id, $font, $points, $now, null, $properties);
+			$job = new Job(0, SessionManager::getInstance()->getUser()->id, $font, $points, $now, null, $font_size, $content, $width, $height, $padding);
 			
 			$result = $job->save();
 			
@@ -165,7 +163,7 @@
 				}
 			}
 				
-			$result = Job::get(null, $user_id, $fnt_id, null, null, null, null);			
+			$result = Job::get(null, $user_id, $fnt_id, null, null, null);			
 			$jobs_temp = $result->value;
 			$jobs = array();
 						
@@ -225,22 +223,8 @@
 				return $response->json();
 			}
 			else
-			{
-				$dict = array();
-				$dict["users"] = array();
-				$dict["fonts"] = array();
-				
-				foreach(User::getAll()->value as $u)
-				{
-					$dict["users"][$u->id] = $u->login;
-				}
-				
-				foreach(Font::getAll()->value as $f)
-				{
-					$dict["fonts"][$f->id] = $f->name;
-				}
-			
-				$response = new Response(1, json_encode($jobs), json_encode($dict));
+			{			
+				$response = new Response(1, json_encode($jobs), "Zwrocono poprawnie liste jobow spelniajacych kryteria");
 				return $response->json();
 			}
 		}

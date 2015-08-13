@@ -22,7 +22,7 @@
 			echo Webservice::getInstance()->addFont();
 			break;
 		case "addJob":
-			echo Webservice::getInstance()->addJob($_POST['properties'], $_POST['points'], $_POST['font']);
+			echo Webservice::getInstance()->addJob($_POST['font_size'], $_POST['content'], $_POST['width'], $_POST['height'], $_POST['padding'], $_POST['points'], $_POST['font']);
 			break;
 		case "removeJob":
 			echo Webservice::getInstance()->removeJob($_GET['id']);
@@ -33,6 +33,12 @@
 		case "getFont":
 			header("Location: ".Webservice::getInstance()->getFontPath($_GET['id']));
 			die();
+			break;
+		case "getUsers":
+			echo Webservice::getInstance()->getUsers();
+			break;
+		case "getFonts":
+			echo Webservice::getInstance()->getFonts();
 			break;
 		default:
 			echo "Wrong action!";

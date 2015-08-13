@@ -56,7 +56,7 @@ function showFileName()
 $(document).ready(
 	function()
 	{
-		$("#id_form").submit( function(event) { sendForm(event, "&properties="+JSON.stringify(settingsObject)+"&points=100&font="+settingsObject.text.fontFamily, handleResponse) } )
+		$("#id_form").submit( function(event) { sendForm(event, "&font_size="+settingsObject.text.fontSize+"&content="+settingsObject.text.content+"&width="+settingsObject.area.width+"&height="+settingsObject.area.height+"&padding="+settingsObject.area.padding+"&points=100&font="+settingsObject.text.fontFamily, handleResponse) } )
 		$("#id_form").change( function(event) { refresh() } )
 		
 		refresh()
