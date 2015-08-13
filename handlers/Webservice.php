@@ -224,7 +224,7 @@
 			}
 			else
 			{			
-				$response = new Response(1, json_encode($jobs), "Zwrocono poprawnie liste jobow spelniajacych kryteria");
+				$response = new Response(1, json_encode(new Result(1, $jobs, "")), "Zwrocono poprawnie liste jobow spelniajacych kryteria");
 				return $response->json();
 			}
 		}
