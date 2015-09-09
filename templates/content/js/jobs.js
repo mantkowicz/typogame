@@ -160,7 +160,7 @@ function showDetails(job)
 	var htmlContent  = "<div class='modal-header'> <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button> ";
 	    htmlContent += "<h4 class='modal-title' id='myModalLabel'> #" + job.id;
 	    htmlContent += "</h4> </div> <br>";
-		htmlContent += "<textarea disabled class='center-block' style='resize:none; width:" + job.width + "px; height:" + job.height + "px; padding:" + job.padding + "px; font-size:" + job.font_size + "px; font-family:" + 'kerning_font_' + FONTS[job.fnt_id].name + "'> " + job.content + " </textarea>";
+	    htmlContent += "<textarea disabled class='center-block' style='resize:none; text-indent: " + job.indent  + "px; line-height: " + job.lineHeight + "px; width:" + job.width + "px; height:" + job.height + "px; padding:" + job.padding + "px; font-size:" + job.font_size + "px; font-family:" + 'kerning_font_' + FONTS[job.fnt_id].name + "'>" + job.content + "</textarea>";
 	    htmlContent += "<br> <div class='col-xs-12'> <hr style='border-color:#DDD; margin-top: 0px !important;'></hr> </div> <br>"; 
 	
 	$('#detailsModal').find('.modal-dialog').find('.modal-content').html(htmlContent);

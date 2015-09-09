@@ -22,7 +22,7 @@
 			echo Webservice::getInstance()->addFont();
 			break;
 		case "addJob":
-			echo Webservice::getInstance()->addJob($_POST['font_size'], $_POST['content'], $_POST['width'], $_POST['height'], $_POST['padding'], $_POST['points'], $_POST['font']);
+			echo Webservice::getInstance()->addJob($_POST['font_size'], $_POST['content'], $_POST['width'], $_POST['height'], $_POST['padding'], $_POST['points'], $_POST['font'], $_POST['indent'], $_POST['lineHeight']);
 			break;
 		case "removeJob":
 			echo Webservice::getInstance()->removeJob($_GET['id']);

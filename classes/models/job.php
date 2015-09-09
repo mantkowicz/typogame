@@ -16,8 +16,10 @@
 		public $width;
 		public $height;
 		public $padding;
+		public $indent;
+		public $lineHeight;
 		
-		public function __construct($id, $usr_id, $fnt_id, $points, $date_start, $date_end, $font_size, $content, $width, $height, $padding)
+		public function __construct($id, $usr_id, $fnt_id, $points, $date_start, $date_end, $font_size, $content, $width, $height, $padding, $indent, $lineHeight)
 		{
 			$this->id = $id;
 			$this->usr_id = $usr_id;
@@ -30,13 +32,15 @@
 			$this->width = $width;
 			$this->height = $height;
 			$this->padding = $padding;
+			$this->indent = $indent;
+			$this->lineHeight = $lineHeight;
 		}
 		
 		public function save()
 		{
 			DatabaseManager::getInstance()->lock("job");
 			
-			$query = "insert into `job`(`id`, `usr_id`, `fnt_id`, `points`, `date_start`, `date_end`, `font_size`, `content`, `width`, `height`, `padding`) values(DEFAULT, $this->usr_id, $this->fnt_id, $this->points, '$this->date_start', '$this->date_end', '$this->font_size', '$this->content', '$this->width', '$this->height', '$this->padding')";
+			$query = "insert into `job`(`id`, `usr_id`, `fnt_id`, `points`, `date_start`, `date_end`, `font_size`, `content`, `width`, `height`, `padding`, `indent`, `lineHeight`) values(DEFAULT, $this->usr_id, $this->fnt_id, $this->points, '$this->date_start', '$this->date_end', '$this->font_size', '$this->content', '$this->width', '$this->height', '$this->padding', '$this->indent', '$this->lineHeight')";
 			$status = DatabaseManager::getInstance()->insert($query);
 				
 			$this->id = DatabaseManager::getInstance()->maxId('job');
@@ -108,7 +112,7 @@
 			{
 				foreach($result as $r)
 				{
-					$arr[] = new Job($r[0], $r[1], $r[2], $r[3], $r[4], $r[5], $r[6], $r[7], $r[8], $r[9], $r[10]);
+					$arr[] = new Job($r[0], $r[1], $r[2], $r[3], $r[4], $r[5], $r[6], $r[7], $r[8], $r[9], $r[10], $r[11], $r[12]);
 				}	
 			}
 
