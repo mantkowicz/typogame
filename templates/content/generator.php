@@ -25,7 +25,7 @@
 				<label class='sr-only' for='id_width'>Szerokość w pikselach</label>
 				<div class='input-group'>
 					<div class='input-group-addon'> <span class='glyphicon glyphicon-resize-horizontal'></span> </div>
-					<input type='number' class='form-control' value='800' id='id_width' name='width' max='2048'>
+					<input type='number' class='form-control' value='480' id='id_width' name='width' max='2048'>
 					<div class='input-group-addon'>px</div>
 				</div>
 			</div>
@@ -36,7 +36,7 @@
 				<label class='sr-only' for='id_height'>Wysokość w pikselach</label>
 				<div class='input-group'>
 					<div class='input-group-addon'> <span class='glyphicon glyphicon-resize-vertical'></span> </div>
-					<input type='number' class='form-control' value='800' id='id_height' name='height' max='2048'>
+					<input type='number' class='form-control' value='320' id='id_height' name='height' max='2048'>
 					<div class='input-group-addon'>px</div>
 				</div>
 			</div>
@@ -46,7 +46,7 @@
 	<div class='col-lg-2 col-sm-4' style='padding: 0px;'>
 		<div class='col-xs-12'>
 			<div class='form-group'>
-				<label class='sr-only' for='id_indent'>wciecie</label>
+				<label class='sr-only' for='id_indent'>Wcięcie akapitu</label>
 				<div class='input-group'>
 					<div class='input-group-addon'> <span class='glyphicon glyphicon-indent-left'></span> </div>
 					<input type='number' class='form-control' value='0' id='id_indent' name='indent' max='999'>
@@ -57,7 +57,7 @@
 		
 		<div class='col-xs-12'>
 			<div class='form-group'>
-				<label class='sr-only' for='id_lineHeight'>interlinia</label>
+				<label class='sr-only' for='id_lineHeight'>Interlinia</label>
 				<div class='input-group'>
 					<div class='input-group-addon'> <span class='glyphicon glyphicon glyphicon-sort-by-alphabet'></span> </div>
 					<input type='number' class='form-control' value='12' id='id_lineHeight' name='lineHeight' max='999'>

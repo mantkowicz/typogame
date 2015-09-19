@@ -24,11 +24,10 @@ function refresh()
 	$("#id_text").css("font-family", settingsObject.text.fontFamilyName);
 	
 	$("#id_text").css("text-indent", settingsObject.text.indent + "px");
+	$("#id_text").css("line-height", settingsObject.text.lineHeight + "px");
 	
 	$("#id_text").css("width", settingsObject.area.width + "px");
 	$("#id_text").css("height", settingsObject.area.height + "px");
-	
-	$("#id_text").css("line-height", settingsObject.area.lineHeight + "px");
 	$("#id_text").css("padding", settingsObject.area.padding + "px");
 	
 	$("#id_text").css("font-size", settingsObject.text.fontSize + "px");
@@ -64,9 +63,9 @@ function showFileName()
 $(document).ready(
 	function()
 	{		
-		$("#id_fontSize").change(function() { if( $("#id_height").val() < $("#id_fontSize").val() ) $("#id_height").val( $("#id_fontSize").val() ); } );
+		$("#id_fontSize").change(function() { if( $("#id_lineHeight").val() < $("#id_fontSize").val() ) $("#id_lineHeight").val( $("#id_fontSize").val() ); } );
 		
-		$("#id_form").submit( function(event) { alert( "&font_size="+settingsObject.text.fontSize+"&content="+settingsObject.text.content+"&width="+settingsObject.area.width+"&height="+settingsObject.area.height+"&padding="+settingsObject.area.padding+"&points=100&font="+settingsObject.text.fontFamily ); sendForm(event, "&font_size="+settingsObject.text.fontSize+"&content="+settingsObject.text.content+"&width="+settingsObject.area.width+"&height="+settingsObject.area.height+"&padding="+settingsObject.area.padding+"&indent="+settingsObject.text.indent+"&lineHeight="+settingsObject.text.lineHeight+"&points=100&font="+settingsObject.text.fontFamily+"&indent="+settingsObject.text.indent+"&lineHeight="+settingsObject.text.lineHeight, handleResponse) } )
+		$("#id_form").submit( function(event) { sendForm(event, "&font_size="+settingsObject.text.fontSize+"&content="+settingsObject.text.content+"&width="+settingsObject.area.width+"&height="+settingsObject.area.height+"&padding="+settingsObject.area.padding+"&indent="+settingsObject.text.indent+"&lineHeight="+settingsObject.text.lineHeight+"&points=100&font="+settingsObject.text.fontFamily+"&indent="+settingsObject.text.indent+"&lineHeight="+settingsObject.text.lineHeight, handleResponse) } )
 		$("#id_form").change( function(event) { refresh() } )
 		
 		refresh()
