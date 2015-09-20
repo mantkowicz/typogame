@@ -40,6 +40,17 @@
 		case "getFonts":
 			echo Webservice::getInstance()->getFonts();
 			break;
+		case "addOffer":
+			echo Webservice::getInstance()->addOffer(0, $_POST['job_id'], $_POST['usr_id'], $_POST['date'], $_POST['html'], $_POST['score'], 0);
+			break;
+		case "setOfferWin":
+			Webservice::getInstance()->setOfferWin($_GET['id']);
+			header("Location: http://www.mantkowicz.pl/kerning/jobs/mine/");
+			die();
+			break;
+		case "getOffers":
+			echo Webservice::getInstance()->getOffers();
+			break;
 		default:
 			echo "Wrong action!";
 	}

@@ -4,6 +4,7 @@
 	require_once _PATH.'classes/models/font.php';
 	require_once _PATH.'classes/models/user.php';
 	require_once _PATH.'classes/models/job.php';
+	require_once _PATH.'classes/models/offer.php';
 	require_once _PATH.'classes/Response.php';
 
 	class Webservice
@@ -252,6 +253,43 @@
 			$font = Font::get($id, null, null, null);
 			
 			return $font->value[0]->path;
+		}
+		
+		public function addOffer($id, $job_id, $usr_id, $date, $html, $score, $win)
+		{
+			$html = str_replace(" ","+",$html);
+			
+			$offer = new Offer(0, $job_id, $usr_id, $date, $html, $score, 0);
+			$result = $offer->save();
+			
+			if( $result->status == 1 )
+			{
+				$response = new Response(1, $result->value[0], "Oferta zostala zapisana");
+				return $response->json();
+			}
+			else
+			{
+				$response = new Response(0, null, "Oferta nie zostala zapisana");
+				return $response->json();
+			}
+		}
+		
+		public function getOffers()
+		{
+			$offers = Offer::getAll();
+			
+			$response = new Response(1, json_encode($offers), "Lista wszystkich ofert zostala zwrocona");
+				
+			return $response->json();
+		}
+		
+		public function setOfferWin($id)
+		{
+			$offer = Offer::get($id, null, null, null, null, null, null);
+			
+			$offer->value[0]->win = 1;
+			$offer->value[0]->remove();
+			$offer->value[0]->save();
 		}
 		
 		public function getJobPropertiesFile()

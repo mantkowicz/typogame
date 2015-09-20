@@ -1,5 +1,6 @@
 var USERS = new Array()
 var FONTS = new Array()
+var OFFERS = new Array()
 
 function getAllUsers()
 {
@@ -51,10 +52,36 @@ function getAllFonts()
 	});
 }
 
+function getAllOffers()
+{
+	$.ajax({
+		type: 'get',  
+		url: 'http://www.mantkowicz.pl/kerning/ws.php?action=getOffers',
+		data: '',
+		success: function(data) 
+		{		
+			if( JSON.parse(data).status == 0 || JSON.parse(data).value == null )
+			{
+				return null;
+			}
+			else
+			{
+				var tempArray = JSON.parse( JSON.parse(data).value ).value;
+				
+				for(var i = 0; i < tempArray.length; i++)
+				{
+					OFFERS[ tempArray[i].id ] = tempArray[i];
+				}
+			}
+		}
+	});
+}
+
 function getAllJobs()
 {
 	getAllUsers();
 	getAllFonts();
+	getAllOffers();
 	
 	$(document).ajaxStop(
 		function () 
@@ -163,6 +190,31 @@ function showDetails(job)
 	    htmlContent += "<textarea disabled class='center-block' style='resize:none; text-indent: " + job.indent  + "px; line-height: " + job.lineHeight + "px; width:" + job.width + "px; height:" + job.height + "px; padding:" + job.padding + "px; font-size:" + job.font_size + "px; font-family:" + 'kerning_font_' + FONTS[job.fnt_id].name + "'>" + job.content + "</textarea>";
 	    htmlContent += "<br> <div class='col-xs-12'> <hr style='border-color:#DDD; margin-top: 0px !important;'></hr> </div> <br>"; 
 	
+    for(var i = 0; i < OFFERS.length; i++)
+	{
+		if( OFFERS[i] != null && OFFERS[i].job_id == job.id )
+		{
+			var modalWidth = $('#detailsModal').find('.modal-dialog').css('width');
+
+			htmlContent += "<hr>";
+			htmlContent += "<img src='data:image/png;base64," + OFFERS[i].html + "' style='-webkit-filter: invert(1); filter: invert(1); margin-left:" + (modalWidth.substring(0, modalWidth.length-2) - job.width)/2.0 + "px;' >";
+			
+			htmlContent += "<div style='text-align:center;'>";
+			htmlContent += "<table valign='middle' style='margin-top:20px; margin-left:" + (modalWidth.substring(0, modalWidth.length-2) - 450)/2 + "px;' > <tr> <td> <span class='glyphicon glyphicon-user'></span> " + USERS[OFFERS[i].usr_id].login + " &nbsp&nbsp&nbsp&nbsp </td> <td> <span class='glyphicon glyphicon-calendar'></span> " + OFFERS[i].date  + " &nbsp&nbsp&nbsp&nbsp </td> <td> <span class='glyphicon glyphicon-star'></span> " + OFFERS[i].score + " &nbsp&nbsp&nbsp&nbsp </td>";
+
+			if( OFFERS[i].win == "0" )
+				htmlContent += "<td> <a class='btn btn-warning' href='http://www.mantkowicz.pl/kerning/ws.php?action=setOfferWin&id=" + OFFERS[i].id + "'> <span class='glyphicon glyphicon-thumbs-up'></span> dobre rozwiązanie </a> </td>";
+			else
+				htmlContent += "<td> <span class='label label-success'> <span class='glyphicon glyphicon-sunglasses'></span> nagrodzona oferta </span> </td>";
+			
+			htmlContent += "</tr> </table>";
+			
+			htmlContent += "</div>";
+			
+			htmlContent += "<hr>";
+		}
+	}
+	    
 	$('#detailsModal').find('.modal-dialog').find('.modal-content').html(htmlContent);
 	$('#detailsModal').modal('toggle');
 }
