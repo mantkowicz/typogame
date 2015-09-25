@@ -123,11 +123,11 @@
 			}
 		}
 		
-		public function addJob($font_size, $content, $width, $height, $padding, $points, $font, $indent, $lineHeight)
+		public function addJob($font_size, $content, $width, $height, $padding, $points, $font, $indent, $lineHeight, $hyphen)
 		{
 			$now = date('Y-m-d H:i:s');
 			
-			$job = new Job(0, SessionManager::getInstance()->getUser()->id, $font, $points, $now, null, $font_size, $content, $width, $height, $padding, $indent, $lineHeight);
+			$job = new Job(0, SessionManager::getInstance()->getUser()->id, $font, $points, $now, null, $font_size, $content, $width, $height, $padding, $indent, $lineHeight, $hyphen);
 			
 			$result = $job->save();
 			

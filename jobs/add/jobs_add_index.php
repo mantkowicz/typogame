@@ -13,7 +13,7 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 
 <?php
 	

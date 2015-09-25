@@ -3,7 +3,7 @@ settingsObject.text = new Object();
 settingsObject.area = new Object();
 
 function refresh()
-{
+{	
 	settingsObject.text.fontSize = document.getElementById("id_form").elements["fontSize"].value;
 
 	var fontSelect = document.getElementById("id_form").elements["font"];
@@ -12,6 +12,8 @@ function refresh()
 	settingsObject.text.fontFamilyName = fontSelect.options[fontSelect.selectedIndex].text;
 	
 	settingsObject.text.content = document.getElementById("id_form").elements["text"].value;
+		
+	settingsObject.text.hyphen =  Hyphenator.hyphenate(document.getElementById("id_form").elements["text"].value, 'pl');
 	
 	settingsObject.text.lineHeight = document.getElementById("id_form").elements["lineHeight"].value;
 	settingsObject.text.indent = document.getElementById("id_form").elements["indent"].value;
@@ -62,10 +64,12 @@ function showFileName()
 
 $(document).ready(
 	function()
-	{		
+	{	
+		Hyphenator.config({hyphenchar : '$'});
+		
 		$("#id_fontSize").change(function() { if( $("#id_lineHeight").val() < $("#id_fontSize").val() ) $("#id_lineHeight").val( $("#id_fontSize").val() ); } );
 		
-		$("#id_form").submit( function(event) { sendForm(event, "&font_size="+settingsObject.text.fontSize+"&content="+settingsObject.text.content+"&width="+settingsObject.area.width+"&height="+settingsObject.area.height+"&padding="+settingsObject.area.padding+"&indent="+settingsObject.text.indent+"&lineHeight="+settingsObject.text.lineHeight+"&points=100&font="+settingsObject.text.fontFamily+"&indent="+settingsObject.text.indent+"&lineHeight="+settingsObject.text.lineHeight, handleResponse) } )
+		$("#id_form").submit( function(event) { sendForm(event, "&font_size="+settingsObject.text.fontSize+"&content="+settingsObject.text.content+"&width="+settingsObject.area.width+"&height="+settingsObject.area.height+"&padding="+settingsObject.area.padding+"&indent="+settingsObject.text.indent+"&lineHeight="+settingsObject.text.lineHeight+"&points=100&font="+settingsObject.text.fontFamily+"&indent="+settingsObject.text.indent+"&lineHeight="+settingsObject.text.lineHeight+"&hyphen="+settingsObject.text.hyphen, handleResponse) } )
 		$("#id_form").change( function(event) { refresh() } )
 		
 		refresh()

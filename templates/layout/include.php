@@ -16,3 +16,7 @@
 
 <script src="<?php echo _STATIC?>js/bootstrap.min.js"></script>
 <script src="<?php echo _STATIC?>js/custom.js"></script>
+
+<!-- Including Hyphenator with its pl language patterns -->
+<script src="<?php echo _STATIC?>js/Hyphenator.js"></script>
+<script src="<?php echo _STATIC?>js/pl.js"></script>
