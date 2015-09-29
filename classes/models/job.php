@@ -56,6 +56,9 @@
 		
 		public function remove()
 		{
+			$query = "delete from `offer` where job_id = $this->id";
+			$status = DatabaseManager::getInstance()->delete($query);
+			
 			$query = "delete from `job` where id = $this->id";
 			$status = DatabaseManager::getInstance()->delete($query);
 		

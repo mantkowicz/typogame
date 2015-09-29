@@ -16,10 +16,10 @@
 	<form id='id_filter' action='<?php echo _URL?>ws.php?action=getJobs' method='get'>	
 		<div class='col-md-3 col-sm-3'>			
 			<div class='form-group'>
-				<label class='sr-only' for='id_font_name'>Czcionka</label>
+				<label class='sr-only' for='id_fnt_id'>Czcionka</label>
 				<div class='input-group'>
 				<div class='input-group-addon'> <span class='glyphicon glyphicon-font'></span> </div>
-					<select class='form-control' id='id_font_name' name='font_name'>
+					<select class='form-control' id='id_fnt_id' name='fnt_id'>
 						
 						<?php 
 							foreach(Font::getAll()->value as $font)
@@ -49,30 +49,14 @@
 					<input type='date' class='form-control' id='id_date_start' name='date_start'>
 				</div>
 			</div>
-			
+		</div>
+		
+		<div class='col-md-3 col-sm-3'>
 			<div class='form-group'>
 				<label class='sr-only' for='id_date_end'>Data utworzenia maksymalna</label>
 				<div class='input-group'>
 					<div class='input-group-addon'> <span class='glyphicon glyphicon-calendar'></span> </div>
 					<input type='date' class='form-control' id='id_date_end' name='date_end'>
-				</div>
-			</div>
-		</div>
-		
-		<div class='col-md-3 col-sm-3'>
-			<div class='form-group'>
-				<label class='sr-only' for='id_points_start'>Ilość punktów minimalna</label>
-				<div class='input-group'>
-					<div class='input-group-addon'> <span class='glyphicon glyphicon-star'></span> </div>
-					<input type='number' class='form-control' id='id_points_start' name='points_start' placeholder='Punkty'>
-				</div>
-			</div>
-			
-			<div class='form-group'>
-				<label class='sr-only' for='id_points_end'>Ilość punktów maksymalna</label>
-				<div class='input-group'>
-					<div class='input-group-addon'> <span class='glyphicon glyphicon-star'></span> </div>
-					<input type='number' class='form-control' id='id_points_end' name='points_end' placeholder='Punkty'>
 				</div>
 			</div>
 		</div>

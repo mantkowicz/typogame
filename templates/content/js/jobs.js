@@ -87,6 +87,8 @@ function getAllJobs()
 		function () 
 		{
 			doGetAllJobs();
+			
+			$(this).unbind("ajaxStop");
 		}
 	);
 }
@@ -115,7 +117,7 @@ function doGetAllJobs()
 			}
 			else
 			{
-				refreshContentHtml( JSON.parse(data).value );
+				refreshContentHtml( JSON.parse(data) );
 			}
 		}
 	});
@@ -123,9 +125,9 @@ function doGetAllJobs()
 
 function refreshContentHtml(jsonstr)
 {
-	jsonobj = JSON.parse(jsonstr);
+	jsonobj = JSON.parse(jsonstr.value);
 	
-	if( jsonobj.status == 0 || jsonobj.value == null )
+	if( jsonobj == null || jsonobj.status == 0 || jsonobj.value == null )
 	{
 		$('#id_content').html( 'Nie znaleziono żadnych wyników' );
 	}
